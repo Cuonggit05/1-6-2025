@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tỏ tình bằng QR</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .heart {
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 6s infinite ease-in;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background: red;
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -5px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -5px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .message {
+      position: absolute;
+      font-size: 20px;
+      animation: floatText 8s infinite ease-in-out;
+    }
+
+    @keyframes floatText {
+      0% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
+
+    .qr-code {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .qr-code img {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  // Trái tim bay
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = 4 + Math.random() * 5 + "s";
+    document.body.appendChild(heart);
+  }
+
+  const messages = [
+    "Cảm ơn vì chị đã đến",
+    "Chúc Su 1/6 vui vẻ ♥",
+    "Mãi giữ sự vui vẻ này nhé"
+  ];
+
+  const repeatCount = 10;
+
+  // Tạo màu riêng biệt cho mỗi dòng
+  const fixedColors = messages.map(() => getRandomColor());
+
+  function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  // Tạo các bản sao của từng thông điệp
+  for (let i = 0; i < messages.length; i++) {
+    for (let j = 0; j < repeatCount; j++) {
+      const text = document.createElement("div");
+      text.className = "message";
+      text.textContent = messages[i];
+      text.style.left = Math.random() * 90 + "vw";
+      text.style.top = Math.random() * 100 + "vh";
+      text.style.animationDuration = 6 + Math.random() * 6 + "s";
+      text.style.color = fixedColors[i];
+      document.body.appendChild(text);
+    }
+  }
+</script>
+
+<!-- QR code tự động tạo từ link Google Drive -->
+<div class="qr-code">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://drive.google.com/drive/folders/13npOasx7WW7pYgHA_ISe1APf4Rwfpvb5?usp=drive_link" alt="QR tỏ tình">
+</div>
+
+</body>
+</html>
